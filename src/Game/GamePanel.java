@@ -38,21 +38,10 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void paint(Graphics graphics) {
-
         //Color of background
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, SCALE * WIDTH, SCALE * HEIGHT);
 
-        //Setting rows and columns
-       /* graphics.setColor(Color.yellow);
-        for (int i = 0; i < HEIGHT * SCALE; i += SCALE) {
-            graphics.drawLine(i, 0, i, WIDTH * SCALE);
-        }
-
-        for (int i = 0; i < WIDTH * SCALE; i += SCALE) {
-            graphics.drawLine(0, i, HEIGHT * SCALE, i);
-        }
-*/
         //Setting board
         graphics.setColor(Board.color);
         int index = 0;

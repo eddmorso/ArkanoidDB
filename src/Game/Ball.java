@@ -15,7 +15,6 @@ class Ball extends JPanel {
     }
 
     void move(){
-       // BreakRandomSet breakRandomSet = new BreakRandomSet();
         x += directionX;
         y += directionY;
         if(x < 0){
