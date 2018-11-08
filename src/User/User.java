@@ -1,5 +1,7 @@
 package User;
 
+import java.sql.*;
+
 public class User {
     private String name;
     private String password;
@@ -9,17 +11,17 @@ public class User {
     User(String name, String password){
         this.name = name;
         this.password = password;
-        //get info from DB...
-        //..
-    }
-
-    User(String name, String password, int numberOfGames, int bestScore){
-        this.bestScore = bestScore;
-        this.name = name;
-        this.numberOfGames = numberOfGames;
-        this.password = password;
-        //push info into DB..
-        //..
+        try{
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/arkanoiddb?useSSL=false&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL","root","root");
+            PreparedStatement statement = connection.prepareStatement("select noGames, bestScore from users where name = ?");
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            this.numberOfGames = resultSet.getInt(1);
+            this.bestScore = resultSet.getInt(2);
+        }catch (Exception ex){
+            System.out.println(ex);
+        }
     }
 
     public String getName() {

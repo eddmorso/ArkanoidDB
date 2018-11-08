@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class LogIn{
 
@@ -39,12 +40,27 @@ public class LogIn{
         signIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String resultQuery = "";
                 if(nameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "You should fill all fields to move on..", "Error", JOptionPane.ERROR_MESSAGE);
-                }else{
+                }
+                try{
+                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/arkanoiddb?useSSL=false&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL","root","root");
+                    PreparedStatement statement = connection.prepareStatement("select password from users where name = ?");
+                    statement.setString(1, nameField.getText());
+                    ResultSet resultSet = statement.executeQuery();
+                    resultSet.next();
+                    resultQuery = resultSet.getString(1);
+                }catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, "Something goes wrong :'(", "Error", JOptionPane.ERROR_MESSAGE);
+                    System.out.println(ex);
+                }
+                if(resultQuery.equals(passwordField.getText())){
                     User user = new User(nameField.getText(), passwordField.getText());
                     jFrame.dispose();
                     new Game(user);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Wrong password", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
